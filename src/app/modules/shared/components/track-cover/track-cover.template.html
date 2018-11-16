@@ -1,0 +1,11 @@
+<div class="track-cover" [class.hasNoTrack]="!track || !getArtworkUrl()">
+  <div *ngIf="track && getArtworkUrl()"
+       class="cover">
+    <img [src]="getArtworkUrl()">
+  </div>
+
+  <div *ngIf="!track || !getArtworkUrl()"
+       class="no-track">
+    <img src="/assets/cassette.jpg">
+  </div>
+</div>

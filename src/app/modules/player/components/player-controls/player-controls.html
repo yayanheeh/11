@@ -1,0 +1,96 @@
+<div class="audio-player-controls">
+
+  <div class="player-settings">
+    <button class="btn btn-xs btn-default"
+            [ngClass]="{'is-activated': playQueue.items.isShuffled()}"
+            (click)="toggleShuffle()">
+      <i class="fa fa-random"></i>
+    </button>
+    <button class="btn btn-xs btn-default"
+            [ngClass]="{'is-activated': playQueue.items.isLooped()}"
+            (click)="toggleLoop()">
+      <i class="fa fa-repeat"></i>
+    </button>
+    <app-volume-btn [volume]="volume" (volumeChange)="setVolume($event)"></app-volume-btn>
+  </div>
+  <div class="fullscreen">
+    <button *ngIf="fullScreenService.canEnterFullScreen()"
+            class="btn btn-xs btn-default"
+            (click)="toggleFullScreen()">
+      <i *ngIf="!fullScreenService.isInFullScreen()" class="fa fa-expand"></i>
+      <i *ngIf="fullScreenService.isInFullScreen()" class="fa fa-compress"></i>
+    </button>
+  </div>
+  <div class="button-container">
+    <button class="btn prev"
+            type="button"
+            [disabled]="!playQueue.items.hasPreviousItem() && currentItem.progress < 1"
+            (click)="previous()">
+      <i class="fa fa-backward" aria-hidden="true"></i>
+    </button>
+
+    <button class="btn btn-round btn-brand play"
+            *ngIf="!playQueue.items.getPlayingItem()"
+            type="button"
+            [disabled]="!playQueue.items.getCurrentItem()"
+            (click)="play()">
+      <i class="fa fa-play" aria-hidden="true"></i>
+    </button>
+
+    <button class="btn btn-round btn-brand pause"
+            *ngIf="playQueue.items.getPlayingItem()"
+            type="button"
+            (click)="pause()">
+      <i class="fa fa-pause" aria-hidden="true"></i>
+    </button>
+
+    <button class="btn next"
+            type="button"
+            [disabled]="!playQueue.items.hasNextItem()"
+            (click)="next()">
+      <i class="fa fa-forward" aria-hidden="true"></i>
+    </button>
+  </div>
+
+  <app-range-slider class="time"
+                    [min]="0"
+                    [max]="currentItem.duration"
+                    [value]="currentItem.progress"
+                    [step]="0.01"
+                    [transformDisplayValue]="transformProgressBarValues"
+                    [showCurrentValue]="true"
+                    [isLoading]="isBuffering"
+                    [allowInfinity]="false"
+                    (valueChanged)="playTrackFromPosition($event)">
+  </app-range-slider>
+
+  <app-context-menu>
+    <div *ngIf="currentItem.track" class="meta">
+      <app-toggle-liked-track [track]="currentItem.track" class="hidden-xs"></app-toggle-liked-track>
+      <div class="details"
+           appDraggable="true"
+           [dragData]="currentItem.track.toJSON()"
+           [dragImageUrl]="currentItem.track.image.getSmallSizeUrl()"
+           dragEffect="copy">
+        <b class="track-title" [title]="currentItem.track.title">{{currentItem.track.title}}</b>
+        <div class="artist">{{currentItem.track.artist.getFullName()}}</div>
+      </div>
+      <div class="timer">
+        <div class="progress">{{currentItem.progress | hReadableSeconds}}</div>
+        <div class="duration">{{currentItem.duration | hReadableSeconds}}</div>
+      </div>
+      <app-add-to-playlist-option style="display: none" [track]="currentItem.track"></app-add-to-playlist-option>
+    </div>
+  </app-context-menu>
+
+  <div *ngIf="!currentItem.track"
+       class="dummy meta">
+    <i class="fa fa-heart-o"
+       aria-hidden="true"></i>
+    <div class="details">
+      <b class="track-title"></b>
+      <div class="artist"></div>
+    </div>
+  </div>
+
+</div>

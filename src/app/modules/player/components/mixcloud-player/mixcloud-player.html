@@ -1,0 +1,14 @@
+<iframe [id]="id"
+        class="mc-player"
+        width="100%"
+        height="120"
+        allow="autoplay"
+        src="https://www.mixcloud.com/widget/iframe/?feed=https%3A%2F%2Fwww.mixcloud.com%2Fspartacus%2Fparty-time%2F&amp;hide_cover=1"
+        frameborder="0">
+</iframe>
+<app-track-cover [track]="track" class="hidden-xs" [size]="getCoverSize()" [animate]="true"></app-track-cover>
+<a class="provider-cover"
+     [href]="track.externalLink"
+     target="_blank">
+  <img src="assets/mixcloud.png" width="90px">
+</a>

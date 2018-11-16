@@ -1,0 +1,361 @@
+@import 'variables';
+
+$borderColorDarkTheme: rgba(255, 255, 255, 0.3);
+$borderColorWhiteTheme: rgba(150, 150, 150, 0.3);
+
+@mixin small-player-btn($darkTheme) {
+  border-radius: 0;
+  border: none !important;
+  font-size: initial;
+  margin: 0;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  display: inline-block;
+
+  @if $darkTheme {
+    color: white;
+  } @else {
+    color: black;
+  }
+
+  &:hover {
+    color: $brand-primary;
+  }
+
+  &:active {
+    @if $darkTheme {
+      box-shadow: inset 0 3px 8px rgba(255, 255, 255, 0.2);
+      background: #1a1a1a;
+    }
+  }
+}
+
+@mixin small-player($darkTheme) {
+  padding-right: 0;
+
+  @if $darkTheme {
+    background: black;
+    color: white;
+  } @else {
+    background: white;
+    color: black;
+  }
+
+  .button-container {
+    padding: 0;
+    position: absolute;
+    display: flex;
+    margin-left: -10px;
+    z-index: 1;
+
+    .prev,
+    .next,
+    .play,
+    .pause {
+      @include small-player-btn($darkTheme);
+      @if $darkTheme {
+        border-right: 1px solid $borderColorDarkTheme !important;
+      } @else {
+        border-right: 1px solid $borderColorWhiteTheme !important;
+      }
+    }
+  }
+
+  .fullscreen {
+    top: 0;
+    z-index: 2;
+
+    @if $darkTheme {
+      border-left: 1px solid $borderColorDarkTheme !important;
+    } @else {
+      border-left: 1px solid $borderColorWhiteTheme !important;
+    }
+
+    .btn-xs {
+      @include small-player-btn($darkTheme);
+    }
+  }
+
+  .player-settings {
+    display: none;
+  }
+
+  /deep/ app-toggle-liked-track {
+    padding: 0 !important;
+    margin-right: 15px;
+
+    .toggle-liked-track {
+      @include small-player-btn($darkTheme);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      @if $darkTheme {
+        border-right: 1px solid $borderColorDarkTheme !important;
+      } @else {
+        border-right: 1px solid $borderColorWhiteTheme !important;
+      }
+    }
+  }
+
+  /deep/ app-range-slider {
+    top: -10px;
+    position: absolute;
+    width: 100%;
+    left: 0;
+
+    .min-value,
+    .max-value {
+      display: none;
+    }
+  }
+
+  .meta {
+    padding: 0 !important;
+    padding-left: 109px !important;
+    width: calc(100vw - 66px);
+    margin: 0;
+    height: 40px;
+
+    .details {
+      padding-top: 3px;
+
+      .artist {
+        display: block;
+      }
+    }
+
+    .timer {
+      display: block;
+      margin-left: auto;
+      padding-left: 10px;
+      text-align: right;
+      position: relative;
+
+      &:after {
+        content: "";
+        position: absolute;
+        height: calc(100% + 10px);
+        width: 1px;
+        border-left: 1px solid $borderColorWhiteTheme;
+        left: 0;
+        top: -5px;
+      }
+    }
+  }
+}
+
+:host {
+  width: 100%;
+  margin: 0 auto;
+  display: block;
+  text-align: center;
+  padding: 0 10px;
+  position: relative;
+
+  .player-settings,
+  .fullscreen {
+    position: absolute;
+    top: 5px;
+    color: $gray-dark;
+
+    .btn-xs,
+    /deep/ app-volume-btn .btn-xs {
+      width: 22px;
+      height: 22px;
+      font-size: 11px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      &.is-activated {
+        color: $brand-primary;
+      }
+    }
+  }
+
+  .fullscreen {
+    right: 5px;
+  }
+
+  .player-settings {
+    left: 5px;
+    display: flex;
+    align-items: center;
+
+    .btn,
+    /deep/ app-volume-btn .btn,
+    .btn:active,
+    /deep/ app-volume-btn .btn:active{
+      border: none;
+      background: transparent;
+
+      &:hover{
+        background: #e6e5e5;
+      }
+    }
+  }
+
+  .button-container {
+    padding-top: 12px;
+    display: flex;
+    justify-content: center;
+
+    .next, .prev {
+      border: none;
+      font-size: 20px;
+      background: none;
+      vertical-align: middle;
+      box-shadow: none;
+
+      &:hover {
+        color: $brand-primary;
+      }
+
+      &:disabled {
+        pointer-events: none;
+      }
+    }
+
+    .play, .pause {
+      width: 50px;
+      height: 50px;
+      font-size: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 10px;
+      transition: all 0.6s ease;
+      border: 1px solid #ff3600 !important;
+
+      &:disabled {
+        pointer-events: none;
+      }
+    }
+
+    .play {
+      background: transparent;
+      color: $brand-primary;
+
+      i {
+        padding-left: 3px;
+      }
+
+      &:hover {
+        background: $brand-primary;
+        color: white;
+      }
+    }
+
+    .pause {
+      background: $brand-primary;
+      color: white;
+    }
+  }
+
+  app-range-slider {
+    display: block;
+    margin-top: -5px;
+  }
+
+  div.volume, div.time {
+    display: flex;
+    justify-content: space-around;
+
+    span, i, div {
+      flex: auto;
+      text-align: center;
+    }
+
+    i {
+      font-size: 22px;
+    }
+  }
+
+  .meta {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+    padding-right: 10px;
+    padding-bottom: 15px;
+    text-align: left;
+
+    app-toggle-liked-track {
+      padding: 10px;
+    }
+
+    .details {
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      .track-title,
+      .artist {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .timer {
+      display: none;
+    }
+  }
+
+  .dummy {
+    i {
+      padding: 10px;
+      color: #ccc;
+    }
+
+    .track-title,
+    .artist {
+      background: #efefef;
+      color: transparent;
+      display: block;
+      height: 17px;
+    }
+
+    .track-title {
+      width: 250px;
+      margin-bottom: 4px;
+    }
+
+    .artist {
+      width: 100px;
+    }
+  }
+
+  &.full-screen {
+    @include small-player(true);
+  }
+
+  @media (max-width: $screen-xs-max) {
+    @include small-player(false);
+
+    .button-container {
+      width: 100vw;
+      .btn.next {
+        margin-left: auto;
+        border-left: 1px solid $borderColorWhiteTheme;
+      }
+    }
+
+    .meta {
+      font-size: 11px;
+      padding-left: 83px !important;
+      width: calc(100vw - 50px);
+
+      .timer {
+        display: none;
+      }
+    }
+
+    .player-settings,
+    .fullscreen {
+      display: none;
+    }
+  }
+}

@@ -1,0 +1,131 @@
+<section class="column">
+  <app-view-header>
+    <i class="fa fa-search" aria-hidden="true"></i>
+    <app-collection-text-input-search #searchBar
+                                      [collection]="searchCollection"
+                                      [queryParam]="'q'">
+    </app-collection-text-input-search>
+  </app-view-header>
+
+  <div *ngIf="!isConnected"
+       class="card">
+    You are in an anonymous mode.
+    <button class="btn btn-link text-link" (click)="updatePrivacySettings()">Update your Privacy Settings</button>
+    to create playlists and favourite tracks
+  </div>
+
+  <app-tab-bar #tabBar
+               (tabChange)="selectTab($event)"
+               [hidden]="showWelcomeText"
+               [activeTabId]="activeTab">
+    <app-tab-pane [id]="availableProviderMap['auxapp'].id"
+                  title="All"
+                  [icon]="availableProviderMap['auxapp'].icon">
+
+      <div *ngIf="tracksAuxapp.length>0"
+           class="results">
+        <app-search-result-tracks [tracks]="tracksAuxapp">
+          <app-filter-form [collection]="tracksAuxapp">
+            <app-youtube-duration-filter label="Duration"
+                                         filterProperty="duration">
+            </app-youtube-duration-filter>
+          </app-filter-form>
+        </app-search-result-tracks>
+      </div>
+
+      <app-empty-state *ngIf="tracksAuxapp.length === 0 && tracksAuxapp.isSyncing"
+                       title="Searching for tracks"
+                       icon="fa fa-search">
+      </app-empty-state>
+
+      <app-empty-state *ngIf="tracksAuxapp.queryParams.q && tracksAuxapp.length === 0 && !isFetching"
+                       title="No tracks were found"
+                       icon="fa fa-search">
+      </app-empty-state>
+
+    </app-tab-pane>
+    <app-tab-pane [id]="availableProviderMap['soundcloud'].id"
+                  [title]="availableProviderMap['soundcloud'].title"
+                  [icon]="availableProviderMap['soundcloud'].icon">
+
+      <div *ngIf="tracksSoundCloud.length>0"
+           class="results">
+        <app-search-result-tracks [tracks]="tracksSoundCloud">
+          <app-filter-form [collection]="tracksSoundCloud">
+            <app-youtube-duration-filter label="Duration"
+                                         filterProperty="duration">
+            </app-youtube-duration-filter>
+          </app-filter-form>
+        </app-search-result-tracks>
+      </div>
+
+      <app-empty-state *ngIf="tracksSoundCloud.length === 0 && tracksSoundCloud.isSyncing"
+                       title="Searching for tracks"
+                       icon="fa fa-search">
+      </app-empty-state>
+
+      <app-empty-state *ngIf="tracksSoundCloud.queryParams.q && tracksSoundCloud.length === 0 && !isFetching"
+                       title="No tracks were found"
+                       icon="fa fa-search">
+      </app-empty-state>
+
+    </app-tab-pane>
+    <app-tab-pane [id]="availableProviderMap['youtube'].id"
+                  [title]="availableProviderMap['youtube'].title"
+                  [icon]="availableProviderMap['youtube'].icon">
+
+      <div *ngIf="tracksYoutube.length>0"
+           class="results">
+        <app-search-result-tracks [tracks]="tracksYoutube">
+          <app-filter-form [collection]="tracksYoutube">
+            <app-youtube-duration-filter label="Duration"
+                                         filterProperty="duration">
+            </app-youtube-duration-filter>
+          </app-filter-form>
+        </app-search-result-tracks>
+      </div>
+
+      <app-empty-state *ngIf="tracksYoutube.length === 0 && tracksYoutube.isSyncing"
+                       title="Searching for tracks"
+                       icon="fa fa-search">
+      </app-empty-state>
+
+      <app-empty-state *ngIf="tracksYoutube.queryParams.q && tracksYoutube.length === 0 && !isFetching"
+                       title="No tracks were found"
+                       icon="fa fa-search">
+      </app-empty-state>
+    </app-tab-pane>
+    <app-tab-pane [id]="availableProviderMap['mixcloud'].id"
+                  [title]="availableProviderMap['mixcloud'].title"
+                  [icon]="availableProviderMap['mixcloud'].icon">
+
+      <div *ngIf="tracksMixcloud.length>0"
+           class="results">
+        <app-search-result-tracks [tracks]="tracksMixcloud">
+          <app-filter-form [collection]="tracksMixcloud">
+            <app-youtube-duration-filter label="Duration"
+                                         filterProperty="duration">
+            </app-youtube-duration-filter>
+          </app-filter-form>
+        </app-search-result-tracks>
+      </div>
+
+      <app-empty-state *ngIf="tracksMixcloud.length === 0 && tracksMixcloud.isSyncing"
+                       title="Searching for tracks"
+                       icon="fa fa-search">
+      </app-empty-state>
+
+      <app-empty-state *ngIf="tracksMixcloud.queryParams.q && tracksMixcloud.length === 0 && !isFetching"
+                       title="No tracks were found"
+                       icon="fa fa-search">
+      </app-empty-state>
+    </app-tab-pane>
+  </app-tab-bar>
+
+  <app-empty-state *ngIf="showWelcomeText"
+                   title="Search for tracks or artists on SoundCloud and YouTube"
+                   icon="fa fa-search"
+                   ctaText="Try searching for {{searchTerm}}"
+                   (ctaClick)="animatedSearch(searchTerm)">
+  </app-empty-state>
+</section>

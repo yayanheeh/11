@@ -1,0 +1,80 @@
+@import 'variables';
+
+@mixin toast-variant($background, $border, $text-color) {
+  .icon-holder {
+    background: $background;
+    color: $text-color;
+  }
+}
+
+:host {
+  .toast {
+    background: white;
+    max-width: 350px;
+    display: flex;
+    box-shadow: 0 0 5px 0 #c8c8c8;
+
+    .icon-holder {
+      min-width: 40px;
+      margin: -10px 5px -10px -15px;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      z-index: 1;
+    }
+
+    .content {
+      flex-grow: 1;
+      padding: 0 5px;
+      display: flex;
+      flex-direction: column;
+
+      h3{
+        margin: 0 10px;
+      }
+    }
+
+    .closer{
+      align-self: center;
+    }
+
+    .action-button {
+      margin: 10px 0 0;
+    }
+
+    &.has-message{
+      .closer{
+        align-self: flex-start;
+      }
+      .content{
+        h3{
+          margin: 0 0 10px 0;
+        }
+      }
+    }
+
+    &.info {
+      @include toast-variant($brand-info, $brand-info, white);
+    }
+
+    &.warning {
+      @include toast-variant($brand-warning, $brand-warning, white);
+    }
+
+    &.danger {
+      @include toast-variant($brand-danger, $brand-danger, white);
+    }
+
+    &.primary {
+      @include toast-variant($brand-primary, $brand-primary, white);
+    }
+  }
+
+  @media (max-width: $screen-sm-min) {
+    .toast{
+      max-width: inherit;
+    }
+  }
+}

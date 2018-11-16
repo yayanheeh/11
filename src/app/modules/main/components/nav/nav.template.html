@@ -1,0 +1,126 @@
+<section class="column">
+
+  <div #shrinkingSidebar
+       class="sidebar">
+    <div class="cloud-player">
+      <app-cloud-player-logo [animate]="true"></app-cloud-player-logo>
+    </div>
+
+    <div class="menu scrollable">
+      <nav>
+        <app-nav-item
+          link="/search"
+          title="Search"
+          icon="fa fa-search">
+        </app-nav-item>
+
+        <app-nav-item
+          *ngIf="showDesktopAppEntry()"
+          link="/native-app"
+          title="Desktop App"
+          icon="fa fa-desktop">
+        </app-nav-item>
+
+        <div class="account" *ngIf="auxappAccount.isConnected()">
+          <app-nav-divider title="Account"></app-nav-divider>
+
+          <app-nav-item
+            *ngIf="!auxappAccount.image.getSmallSizeUrl()"
+            class="user"
+            link="/me"
+            [exact]="true"
+            [title]="auxappAccount.getFullName()"
+            icon="fa fa-user">
+          </app-nav-item>
+
+          <app-nav-item
+            *ngIf="auxappAccount.image.getSmallSizeUrl()"
+            class="user"
+            link="/me"
+            [exact]="true"
+            [title]="auxappAccount.getFullName()"
+            [image]="auxappAccount.image.getSmallSizeUrl()">
+          </app-nav-item>
+
+          <app-nav-item
+            link="/me/likes"
+            title="Likes"
+            icon="fa fa-heart">
+          </app-nav-item>
+
+          <app-nav-item
+            class="visible-xs visible-sm"
+            link="/me/playlists"
+            title="Playlists"
+            icon="fa fa-list-alt">
+          </app-nav-item>
+        </div>
+
+        <app-nav-item
+          *ngIf="!auxappAccount.isConnected()"
+          title="Update Privacy Settings"
+          icon="fa fa-user secret"
+          (click)="openPrivacySettings()">
+        </app-nav-item>
+
+        <app-nav-divider title="Playlists" *ngIf="auxappAccount.isConnected()"></app-nav-divider>
+
+        <div class="playlists" *ngIf="auxappAccount.isConnected()">
+          <app-collapsible
+            *ngFor="let account of authenticatedUser.accounts.models"
+            [title]="availableProviderMap[account.provider].title"
+            icon="fa {{availableProviderMap[account.provider].icon}}"
+            [(isCollapsed)]="availableProviderMap[account.provider].playlistCollapsed">
+            <div *ngIf="!account.isConnected()">
+              <app-nav-item
+                (click)="connect(account)"
+                title="Connect"
+                icon="fa fa-user">
+              </app-nav-item>
+            </div>
+            <div *ngIf="account.isConnected()">
+              <app-nav-input-item
+                icon="fa fa-plus"
+                title="Add new playlist"
+                [(ngModel)]="availableProviderMap[account.provider].tmpPlaylistModel.title"
+                (submit)="saveTmpPlaylist(account)">
+              </app-nav-input-item>
+              <div *ngFor="let playlist of account.playlists.models"
+                   class="playlist"
+                   appDropzone
+                   [dropItemRef]="playlist"
+                   (dropData)="drop($event)">
+                <app-nav-item
+                  *ngIf="playlist.image.getSmallSizeUrl()"
+                  [exact]="true"
+                  link="/playlists/{{playlist.provider}}/{{playlist.id}}"
+                  [title]="playlist.title"
+                  [image]="playlist.image.getSmallSizeUrl()">
+                </app-nav-item>
+                <app-nav-item
+                  *ngIf="!playlist.image.getSmallSizeUrl()"
+                  [exact]="true"
+                  link="/playlists/{{playlist.provider}}/{{playlist.id}}"
+                  [title]="playlist.title"
+                  icon="fa fa-list-alt">
+                </app-nav-item>
+              </div>
+            </div>
+          </app-collapsible>
+        </div>
+      </nav>
+    </div>
+
+    <div class="footer">
+      <span class="version">v{{version}}</span> •
+      <span class="imprint">
+        <a routerLink="/imprint">Imprint</a>
+      </span> •
+      <span class="privacy">
+        <a routerLink="/privacy">Privacy</a>
+      </span>
+    </div>
+
+  </div>
+
+</section>

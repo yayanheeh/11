@@ -1,0 +1,18 @@
+@import 'variables';
+
+:host {
+  @media (max-width: $screen-xs-max) {
+    app-user-comments {
+      display: none;
+    }
+  }
+
+  .provider-cover{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 0 10px 5px 10px;
+    background: white;
+    transition: opacity 0.2s ease-in-out;
+  }
+}

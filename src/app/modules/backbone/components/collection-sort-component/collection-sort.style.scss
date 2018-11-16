@@ -1,0 +1,12 @@
+@import 'variables';
+
+:host {
+  .collection-sort {
+    transition: color 0.5s ease;
+
+    &.active,
+    &:hover {
+      color: $brand-primary;
+    }
+  }
+}

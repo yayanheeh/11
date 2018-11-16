@@ -1,0 +1,83 @@
+@import 'variables';
+
+:host {
+  &.fullscreen-player {
+    .player {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+
+      /deep/ .player-controller {
+        height: 100vh !important;
+        width: 100vw;
+        background: black;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: none !important;
+      }
+
+      app-player-controls {
+        width: 100vw;
+        position: fixed;
+        bottom: 0;
+        z-index: 3;
+      }
+
+      /deep/ app-soundcloud-player,
+      /deep/ app-mixcloud-player {
+        .provider-cover {
+          bottom: 45px;
+        }
+      }
+    }
+  }
+
+  @media only screen and (min-width: $screen-sm-min) {
+    .player {
+      width: 320px;
+      position: relative;
+      box-shadow: 0 8px 8px 0 #c8c8c8;
+      z-index: 99;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+
+      .track-item {
+        box-shadow: 0 2px 8px 0 #c8c8c8;
+        position: relative;
+        z-index: 1;
+        background: white;
+      }
+    }
+  }
+
+  @media (max-width: $screen-xs-max) {
+    position: fixed;
+    bottom: 33px;
+    width: 100vw;
+    z-index: 2;
+
+    .player {
+      width: 100%;
+      box-shadow: none;
+
+      .track-item {
+        height: 48px;
+        background: white;
+      }
+
+      &.noTrack {
+        display: none;
+      }
+    }
+
+    .no-items {
+      .track-item {
+        display: none;
+      }
+    }
+  }
+}

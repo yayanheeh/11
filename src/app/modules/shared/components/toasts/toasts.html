@@ -1,0 +1,6 @@
+<ul class="toasts">
+  <li @toastAnimation
+      *ngFor="let toast of toasts.models">
+    <app-toast [toast]="toast"></app-toast>
+  </li>
+</ul>
